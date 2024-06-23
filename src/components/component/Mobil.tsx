@@ -17,7 +17,7 @@ export default function MobilComponent({
   mobils,
   user
 }: any) {
-  const userId = user.data?.user.id
+  const userId = user.data?.user.id || user.user.id
 
   function currencyFormat(num: any) {
     return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '.')
@@ -27,7 +27,7 @@ export default function MobilComponent({
       <div className="flex flex-col overflow-x-hidden w-full">
         <h1 className="p-3 text-xl dark:text-white">
           Daftar Mobil Saya,{" "}
-          {user.data?.user.name} As {user.data?.user.role}
+          {user.data?.user.name || user.user.name} As {user?.data?.user?.role || user.user.role}
         </h1>
 
         <div className="">
@@ -61,8 +61,6 @@ export default function MobilComponent({
               <TableHeadCell>Jumlah Tempat Duduk</TableHeadCell>
               <TableHeadCell>Tarif Per Hari</TableHeadCell>
               <TableHeadCell>Status Booking</TableHeadCell>
-              <TableHeadCell>Status Pembayaran</TableHeadCell>
-              <TableHeadCell>Status Penyewaan</TableHeadCell>
               <TableHeadCell>Action</TableHeadCell>
             </TableHead>
             <TableBody className="divide-y">
@@ -87,12 +85,6 @@ export default function MobilComponent({
                     <TableCell>Rp. <strong className="text-teal-500">{currencyFormat(Number(mobils.tarif))}</strong></TableCell>
                     <TableCell>
                       <Badge color={mobils.status_booking === "Sudah Dibooking" ? "success" : "warning"}>{mobils.status_booking}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge color={mobils.status_pembayaran === "Sudah Dibayar" ? "success" : "warning"}>{mobils.status_pembayaran}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge color={mobils.status_penyewaan === "Sudah Dikembalikan" ? "success" : "warning"}>{mobils.status_penyewaan}</Badge>
                     </TableCell>
                     <TableCell className="flex flex-row gap-2">
                       <DrawerEditMobil mobils={mobils} userId={userId}/>

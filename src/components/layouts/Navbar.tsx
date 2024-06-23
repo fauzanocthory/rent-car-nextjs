@@ -97,6 +97,7 @@ export default async function NavbarComponents() {
         </NavbarLink>
         <NavbarLink href="#">About</NavbarLink>
         <NavbarLink href="#">Contact</NavbarLink>
+        <NavbarLink as={Link} href="/mobils">List Mobil</NavbarLink>
       </NavbarCollapse>
       <Flowbite>
         <DarkThemeToggle />

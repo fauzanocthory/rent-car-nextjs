@@ -5,6 +5,7 @@ import { Button, Modal } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { MdDelete } from "react-icons/md";
 
 export function UsersDeleteDrawer(user: any) {
   const [openModal, setOpenModal] = useState(false);
@@ -19,7 +20,9 @@ export function UsersDeleteDrawer(user: any) {
 
   return (
     <>
-      <Button onClick={() => setOpenModal(true)}>Hapus</Button>
+      <Button color="red" onClick={() => setOpenModal(true)}>
+        <MdDelete />
+      </Button>
       <Modal
         show={openModal}
         size="md"

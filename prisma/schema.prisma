@@ -12,18 +12,19 @@ model User {
   name                String?
   email               String?   @unique
   emailVerified       DateTime?
-  image               String  @default("https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/PROFILE-ntWbPF3t8umc0N0aMgHbc5J0nyWvVJ.jpg")
+  image               String    @default("https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/PROFILE-ntWbPF3t8umc0N0aMgHbc5J0nyWvVJ.jpg")
   role                String    @default("user")
   nomorHandphone      String?
   totalRiwayatBooking String?
-  stnk                String @default("https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/STNK-aOUSUKEQlDGsstjDjkhKRyaxgOHrLG.png")
-  sim                 String @default("https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/SIM-DVNDYnkJVD42uWQZekL3jT5dj8dpeG.jpg")
+  stnk                String    @default("https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/STNK-aOUSUKEQlDGsstjDjkhKRyaxgOHrLG.png")
+  sim                 String    @default("https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/SIM-DVNDYnkJVD42uWQZekL3jT5dj8dpeG.jpg")
   accounts            Account[]
   sessions            Session[]
   mobils              Mobil[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Booking   Booking[]
 }
 
 model Account {
@@ -79,13 +80,16 @@ model Mobil {
   air_conditioner   String?
   bluetooth         String?
   audio_jack        String?
-  fotoMobil        FotoMobil[]
+  kapasitas_tangki  String?
+  tenaga_kuda       String?
+  kecepatan_cc      String?
+  jumlah_pintu      String?
+  fotoMobil         FotoMobil[]
   tarif             String?
-  status_booking    String?     @default("belum dibooking")
-  status_pembayaran String?     @default("belum dibayar")
-  status_penyewaan  String?     @default("belum dikembalikan")
+  status_booking    String?     @default("Belum Bibooking")
   nomor_polisi      String?     @unique
   userId            String      @db.ObjectId
+  Booking           Booking[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -95,10 +99,22 @@ model Mobil {
   @@map("mobils")
 }
 
-
 model FotoMobil {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
   image   String?
+  mobilId String  @db.ObjectId
+  mobil   Mobil   @relation(fields: [mobilId], references: [id], onDelete: Cascade)
+}
+
+model Booking {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
   mobilId String @db.ObjectId
   mobil   Mobil  @relation(fields: [mobilId], references: [id], onDelete: Cascade)
+  userId  String @db.ObjectId
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tanggal_mulai_sewa Int
+  lama_hari Int
+  tglSelesaiSewa Int
+  status_pembayaran String?     @default("Belum Dibayar")
+  status_pengembalian String?     @default("Belum Dikembalikan")
 }

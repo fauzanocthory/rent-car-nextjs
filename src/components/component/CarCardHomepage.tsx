@@ -1,47 +1,58 @@
-import { Button, Card } from "flowbite-react";
+import { Badge, Button, Card } from "flowbite-react";
 import { IoPeople } from "react-icons/io5";
 import { GiGearStick } from "react-icons/gi";
 import Image from "next/image";
 import { BiSolidGasPump } from "react-icons/bi";
 import Link from "next/link";
 
-export function CarCardComponent() {
+export function CarCardComponent({ mobils }: any) {
   return (
     <Card
-      className="max-w-screen m-2"
+      className="m-2"
       renderImage={() => (
         <Image
-        src="https://shutterstock.com/shutterstock/photos/2265832113/display_1500/stock-photo-modern-subcompact-crossover-suv-beautiful-wheels-large-chrome-grille-2265832113.jpg"
+          src={mobils.fotoMobil[0].image}
           width={500}
           height={500}
-          alt="image 1"
+          alt={mobils.merk}
           priority
+          className="max-h-32 max-w-32"
         />
       )}
     >
       <div>
-        <dd className="font-medium text-gray-400">Toyota</dd>
-        <dd className="font-medium text-gray-900">Fortuner</dd>
+        <dd className="font-medium text-gray-400">{mobils.merk}</dd>
+        <dd className="font-medium text-gray-900">{mobils.type}</dd>
       </div>
 
       <div className="flex items-center justify-between">
         <span className="text-sm text-gray-900 dark:text-white">
-          Rp. 100.000/hari
+          Rp. {mobils.tarif}/hari
         </span>
-        <Button color="teal" as={Link} href="/mobils/1">Booking</Button>
+        {mobils.status_booking === "Sudah Dibooking" ? (
+          <>
+            <Badge color="failure">Mobil Sudah Dibooking</Badge>
+          </>
+        ) : (
+          <>
+            <Button color="teal" as={Link} href={`/mobils/${mobils.id}`}>
+              Booking
+            </Button>
+          </>
+        )}
       </div>
       <div className="flex justify-around gap-4">
         <div className="flex">
           <IoPeople color="teal" size="30" />
-          <h1>4</h1>
+          <h1>{mobils.max_penumpang}</h1>
         </div>
         <div className="flex">
           <GiGearStick color="teal" size="30" />
-          <h1>Manual</h1>
+          <h1>{mobils.persneling}</h1>
         </div>
         <div className="flex">
           <BiSolidGasPump color="teal" size="30" />
-          <h1>Premium</h1>
+          <h1>{mobils.bahan_bakar}</h1>
         </div>
       </div>
     </Card>

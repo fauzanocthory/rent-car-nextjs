@@ -23,7 +23,7 @@ export function Dashboard({user}: any) {
     <Flowbite theme={{ theme: customTheme }}>
       <Sidebar
         aria-label="Sidebar with multi-level dropdown example"
-        className="h-screen overflow-hidden"
+        className="h-screen overflow-visible"
       >
         <Sidebar.Items>
           <Sidebar.ItemGroup>
@@ -45,10 +45,10 @@ export function Dashboard({user}: any) {
                 </Sidebar.Item>
                 <Sidebar.Item
                   as={Link}
-                  href="/admin/riwayat-penyewaan"
+                  href="/admin/bookings"
                   icon={AiFillDollarCircle}
                 >
-                  Riwayat Penyewaan
+                  Bookings
                 </Sidebar.Item>
                 <Sidebar.Item
                   as={Link}

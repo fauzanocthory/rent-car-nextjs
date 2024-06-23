@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import toast from "react-hot-toast";
 import { HiCalendar } from "react-icons/hi";
+import { FaCar, FaRegEdit } from "react-icons/fa";
 
 export function UsersUpdateDrawer(user: any) {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +43,9 @@ export function UsersUpdateDrawer(user: any) {
   return (
     <>
       <div className="">
-        <Button onClick={() => setIsOpen(true)}>Edit</Button>
+        <Button color="yellow" onClick={() => setIsOpen(true)}>
+          <FaRegEdit />
+        </Button>
       </div>
       <Drawer open={isOpen} onClose={handleClose} position="right">
         <Drawer.Header title="EDIT USER" titleIcon={HiCalendar} />

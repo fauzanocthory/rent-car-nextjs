@@ -4,6 +4,7 @@ import prisma from "./db";
 import { z } from "zod";
 import { del, put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const getimageFromDb = async (id: string) => {
   try {
@@ -102,13 +103,17 @@ export const updateUser = async (prevState: unknown, formData: FormData) => {
     imagePathStnk = imageFromDb.stnk;
     imagePathSim = imageFromDb.sim;
   } else {
-    if(imageFromDb.image !== "https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/PROFILE-ntWbPF3t8umc0N0aMgHbc5J0nyWvVJ.jpg" ||
-      imageFromDb.stnk !== "https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/STNK-aOUSUKEQlDGsstjDjkhKRyaxgOHrLG.png" ||
-      imageFromDb.sim !== "https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/SIM-DVNDYnkJVD42uWQZekL3jT5dj8dpeG.jpg"
+    if (
+      imageFromDb.image !==
+        "https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/PROFILE-ntWbPF3t8umc0N0aMgHbc5J0nyWvVJ.jpg" ||
+      imageFromDb.stnk !==
+        "https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/STNK-aOUSUKEQlDGsstjDjkhKRyaxgOHrLG.png" ||
+      imageFromDb.sim !==
+        "https://m7vwiihfc6hf4bbg.public.blob.vercel-storage.com/SIM-DVNDYnkJVD42uWQZekL3jT5dj8dpeG.jpg"
     ) {
-      await del(imageFromDb.image)
-      await del(imageFromDb.stnk)
-      await del(imageFromDb.sim)
+      await del(imageFromDb.image);
+      await del(imageFromDb.stnk);
+      await del(imageFromDb.sim);
     }
     const url_image = await put(image.name, image, {
       access: "public",
@@ -180,6 +185,19 @@ export const getMobils = async () => {
   return mobils;
 };
 
+// SINGLE MOBIL
+export const getOneMobil = async (mobilId: any) => {
+  const mobils = await prisma.mobil.findUnique({
+    where: {
+      id: mobilId,
+    },
+    include: {
+      fotoMobil: true,
+    },
+  });
+  return mobils;
+};
+
 // TAMBAH MOBIL
 const tambahMobilSchema = z.object({
   userId: z.string(),
@@ -234,8 +252,6 @@ export const tambahMobil = async (prevState: unknown, formData: FormData) => {
     foto_mobil,
     tarif,
     status_booking,
-    status_pembayaran,
-    status_penyewaan,
   } = validatedFields.data;
 
   const { url } = await put(foto_mobil.name, foto_mobil, {
@@ -263,8 +279,6 @@ export const tambahMobil = async (prevState: unknown, formData: FormData) => {
         },
         tarif,
         status_booking,
-        status_pembayaran,
-        status_penyewaan,
         userId,
       },
     });
@@ -323,8 +337,6 @@ export const updateMobil = async (prevState: unknown, formData: FormData) => {
     bahan_bakar,
     persneling,
     status_booking,
-    status_pembayaran,
-    status_penyewaan,
     foto_mobil,
     nomor_polisi,
   } = validateFields.data;
@@ -346,8 +358,6 @@ export const updateMobil = async (prevState: unknown, formData: FormData) => {
         bahan_bakar,
         persneling,
         status_booking,
-        status_pembayaran,
-        status_penyewaan,
         nomor_polisi,
         fotoMobil: {
           create: {
@@ -437,5 +447,120 @@ export const deletePhotoMobil = async (
     return { message: "ok" };
   } catch (error) {
     return { message: "Failed to delete data" };
+  }
+};
+
+// BOOKING POST
+const postBookingSchema = z.object({
+  tanggal_sewa: z.string(),
+  lama_hari: z.string(),
+  mobilId: z.string(),
+  userId: z.string(),
+});
+
+export const postBooking = async (prevState: unknown, formData: FormData) => {
+  const validatedFields = postBookingSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
+
+  if (!validatedFields.success) {
+    return {
+      error: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const { tanggal_sewa, lama_hari, mobilId, userId } = validatedFields.data;
+  // concer string lama_hari jadi number
+  const lamahariToNumber = Number(lama_hari)-1
+  // convert date jadi datestring dari tanggal_sewa
+  const tglSewaDateString = new Date(tanggal_sewa).toLocaleDateString()
+  // ubah date string jadi milisecond
+  const tglSewaMilisecond = new Date(tglSewaDateString).getTime();
+  // kalkulasi lama hari sewa dengan milisecond
+  const lamaHariMilisecond = lamahariToNumber*86400000 
+  // kalkulasi lama hari dan muali sewa dalam milisecond
+  const tglSelesaiSewaMilisecond = lamaHariMilisecond+tglSewaMilisecond
+  
+  // ubah menjadi datestring agar fapat dibaca manusia 
+  // const tglSelesaiSewaDateString = new Date(tglSelesaiSewaMilisecond).toLocaleDateString()
+
+
+  try {
+    await prisma.booking.create({
+      data: {
+        mobilId: mobilId,
+        userId: userId,
+        tanggal_mulai_sewa: tglSewaMilisecond,
+        lama_hari: lamahariToNumber,
+        tglSelesaiSewa: tglSelesaiSewaMilisecond,
+      },
+    });
+    return { message: "ok" };
+  } catch (error) {
+    return { message: "Failed to create data" };
+  }
+};
+
+// get data utk user biasa
+export const getAllBooking = async () => {
+  const allBookings = await prisma.booking.findMany({
+    include: {
+      mobil: true,
+      user: true
+    }
+  });
+  return allBookings;
+};
+
+export const getSingleBooking = async (userId:any) => {
+  const singleBookings = await prisma.booking.findMany({
+    where: {
+      userId: userId
+    },
+    include: {
+      mobil: true,
+      user: true
+    }
+  });
+  return singleBookings;
+};
+
+// edit booking data
+const editBookingSchema = z.object({
+  status_pembayaran: z.string(),
+  status_pengembalian: z.string(),
+  bookingId: z.string(),
+});
+
+export const editBooking = async (prevState: unknown, formData: FormData) => {
+  const validateFields = editBookingSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
+
+  if (!validateFields.success) {
+    return {
+      error: validateFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const {
+    status_pembayaran,
+    status_pengembalian,
+    bookingId
+  } = validateFields.data;
+  try {
+    await prisma.booking.update({
+      where: {
+        id: bookingId,
+      },
+      data: {
+        status_pembayaran,
+        status_pengembalian,
+      },
+    });
+    redirect('/user')
+    return { message: "ok" };
+  } catch (error) {
+    return { message: "failed to update data" };
   }
 };

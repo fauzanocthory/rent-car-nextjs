@@ -51,9 +51,9 @@ export default function DrawerEditMobil({ mobils, userId }: any) {
           {/* FORM UNTUK DELETE FOTO MOBIL DARI DB DAN VERCEL BLOB */}
           <div id="fileUpload" className="my-4">
             <div className="flex w-full overflow-x-scroll gap-2">
-              {mobils.fotoMobil.map((fotoMobil: any, index: any) => {
+              {mobils.fotoMobil.map((fotoMobil: any) => {
                 return (
-                  <FotoMobilListForm key={index + 1} mobilId={fotoMobil.id} fotoMobil={fotoMobil.image} />
+                  <FotoMobilListForm key={fotoMobil.id} mobilId={fotoMobil.id} fotoMobil={fotoMobil.image} />
                 );
               })}
             </div>

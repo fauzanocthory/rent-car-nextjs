@@ -73,7 +73,7 @@ export default async function ListUsers() {
                   </TableCell>
                   <TableCell>{user.stnk || "Tidak Ada"}</TableCell>
                   <TableCell>{user.sim || "Tidak Ada"}</TableCell>
-                  <TableCell className="flex flex-col">
+                  <TableCell className="flex flex-row gap-2">
                     <UsersUpdateDrawer {...user} />
                     <UsersDeleteDrawer {...user}/>
                   </TableCell>

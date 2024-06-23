@@ -9,13 +9,13 @@ import {
 } from "flowbite-react";
 import Link from "next/link";
 
-import { getSingleBooking } from "@/lib/getData";
-import RencanaBookingComponent from "@/components/component/RencanaBooking";
+import { getAllBooking } from "@/lib/getData";
 import { auth } from "../../../../../auth";
+import AdminBookingComponent from "@/components/component/AdminBookingsComponents";
 
 export default async function RencanaBooking() {
+  const bookings = await getAllBooking();
   const user = await auth()
-  const bookings = await getSingleBooking(user?.user.id);
   return (
     <>
       <div className="flex flex-col overflow-x-scroll">
@@ -44,6 +44,7 @@ export default async function RencanaBooking() {
                 <Checkbox />
               </TableHeadCell>
               <TableHeadCell>Kode Booking</TableHeadCell>
+              <TableHeadCell>User</TableHeadCell>
               <TableHeadCell>Merk</TableHeadCell>
               <TableHeadCell>Type</TableHeadCell>
               <TableHeadCell>Warna</TableHeadCell>
@@ -53,9 +54,8 @@ export default async function RencanaBooking() {
               <TableHeadCell>Lama Sewa</TableHeadCell>
               <TableHeadCell>Tarif Per Hari</TableHeadCell>
               <TableHeadCell>Total Biaya</TableHeadCell>
-              <TableHeadCell>Status Booking</TableHeadCell>
               <TableHeadCell>Status Pembayaran</TableHeadCell>
-              <TableHeadCell>Status Penyewaan</TableHeadCell>
+              <TableHeadCell>Status Pengembalian</TableHeadCell>
               <TableHeadCell>Action</TableHeadCell>
             </TableHead>
             <TableBody className="divide-y">
@@ -63,7 +63,7 @@ export default async function RencanaBooking() {
                 bookings.map((booking: any) => {
                   return (
                     <>
-                      <RencanaBookingComponent user={user} bookings={booking} />
+                      <AdminBookingComponent user={user} bookings={booking} />
                     </>
                   );
                 })}
