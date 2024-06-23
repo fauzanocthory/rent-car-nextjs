@@ -23,7 +23,7 @@ export function Dashboard({user}: any) {
     <Flowbite theme={{ theme: customTheme }}>
       <Sidebar
         aria-label="Sidebar with multi-level dropdown example"
-        className="h-screen overflow-visible"
+        className="h-[900px] w-fit overflow-y-visible"
       >
         <Sidebar.Items>
           <Sidebar.ItemGroup>

@@ -9,13 +9,13 @@ import {
 } from "flowbite-react";
 import Link from "next/link";
 
-import { getSingleBooking } from "@/lib/getData";
+import { getBookingUser } from "@/lib/getData";
 import RencanaBookingComponent from "@/components/component/RencanaBooking";
 import { auth } from "../../../../../auth";
 
 export default async function RencanaBooking() {
   const user = await auth()
-  const bookings = await getSingleBooking(user?.user.id);
+  const bookings = await getBookingUser(user?.user.id);
   return (
     <>
       <div className="flex flex-col overflow-x-scroll">

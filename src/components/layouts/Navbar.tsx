@@ -36,7 +36,7 @@ export default async function NavbarComponents() {
         {user && user ? (
           <>
             <Dropdown
-              arrowIcon={false}
+              arrowIcon={true}
               inline
               label={
                 <Avatar

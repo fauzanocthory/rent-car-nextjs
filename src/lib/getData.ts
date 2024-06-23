@@ -213,7 +213,7 @@ const tambahMobilSchema = z.object({
   air_conditioner: z.string().min(1),
   bluetooth: z.string().min(1),
   audio_jack: z.string().min(1),
-  tarif: z.string().min(1),
+  tarif: z.number().min(1),
   nomor_polisi: z.string().min(1),
   foto_mobil: z
     .instanceof(File)
@@ -299,8 +299,6 @@ const updateSchema = z.object({
   bahan_bakar: z.string(),
   persneling: z.string(),
   status_booking: z.string(),
-  status_pembayaran: z.string(),
-  status_penyewaan: z.string(),
   max_penumpang: z.string(),
   air_conditioner: z.string(),
   bluetooth: z.string(),
@@ -309,7 +307,7 @@ const updateSchema = z.object({
   nomor_polisi: z.string(),
   foto_mobil: z
     .instanceof(File)
-    .refine((file) => file.type.startsWith("image/"), {
+    .refine((file) => file.size === 0 || file.type.startsWith("image/"), {
       message: "Hanya file berupa gambar yang diterima",
     })
     .refine((file) => file.size < 4000000, {
@@ -358,12 +356,12 @@ export const updateMobil = async (prevState: unknown, formData: FormData) => {
         bahan_bakar,
         persneling,
         status_booking,
-        nomor_polisi,
         fotoMobil: {
           create: {
             image: url,
           },
         },
+        nomor_polisi,
         userId,
       },
     });
@@ -501,7 +499,7 @@ export const postBooking = async (prevState: unknown, formData: FormData) => {
   }
 };
 
-// get data utk user biasa
+// get data bookings utk admin
 export const getAllBooking = async () => {
   const allBookings = await prisma.booking.findMany({
     include: {
@@ -512,9 +510,11 @@ export const getAllBooking = async () => {
   return allBookings;
 };
 
-export const getSingleBooking = async (userId:any) => {
-  const singleBookings = await prisma.booking.findMany({
+// get data bookings utk user
+export const getBookingUser = async (userId:any) => {
+  const allBookingsUser = await prisma.booking.findMany({
     where: {
+      status_pengembalian: "Belum Dikembalikan",
       userId: userId
     },
     include: {
@@ -522,7 +522,26 @@ export const getSingleBooking = async (userId:any) => {
       user: true
     }
   });
-  return singleBookings;
+  return allBookingsUser;
+};
+
+// get data bookings utk user
+export const getBookingSewa = async (userId:any) => {
+  const allBookingsSewa = await prisma.booking.findMany({
+    where: {
+      status_pengembalian: "Sudah Dikembalikan",
+      userId: userId
+    },
+    include: {
+      mobil: {
+        include: {
+          fotoMobil: true
+        }
+      },
+      user: true,
+    }
+  });
+  return allBookingsSewa;
 };
 
 // edit booking data
@@ -530,6 +549,7 @@ const editBookingSchema = z.object({
   status_pembayaran: z.string(),
   status_pengembalian: z.string(),
   bookingId: z.string(),
+  mobilId: z.string(),
 });
 
 export const editBooking = async (prevState: unknown, formData: FormData) => {
@@ -546,7 +566,8 @@ export const editBooking = async (prevState: unknown, formData: FormData) => {
   const {
     status_pembayaran,
     status_pengembalian,
-    bookingId
+    bookingId,
+    mobilId
   } = validateFields.data;
   try {
     await prisma.booking.update({
@@ -558,7 +579,19 @@ export const editBooking = async (prevState: unknown, formData: FormData) => {
         status_pengembalian,
       },
     });
-    redirect('/user')
+
+    // INI AKAN OTOMATIS MENGUPDATE FIELD STATUS_BOOKING 
+    // PADA TABLE MOBIL KETIKA ADMIN MENGUBAH STATUS_PENGEMBALIAN PADA TABLE BOOKING
+    if(status_pengembalian === "Sudah Dikembalikan"){
+      await prisma.mobil.update({
+        where: {
+          id: mobilId
+        },
+        data: {
+          status_booking: 'Belum Dibooking'
+        }
+      })
+    }
     return { message: "ok" };
   } catch (error) {
     return { message: "failed to update data" };

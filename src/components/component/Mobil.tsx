@@ -19,12 +19,9 @@ export default function MobilComponent({
 }: any) {
   const userId = user.data?.user.id || user.user.id
 
-  function currencyFormat(num: any) {
-    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '.')
- }
   return (
     <>
-      <div className="flex flex-col overflow-x-hidden w-full">
+      <div className="flex flex-col overflow-x-hidden">
         <h1 className="p-3 text-xl dark:text-white">
           Daftar Mobil Saya,{" "}
           {user.data?.user.name || user.user.name} As {user?.data?.user?.role || user.user.role}
@@ -82,7 +79,7 @@ export default function MobilComponent({
                     <TableCell>{mobils.bluetooth}</TableCell>
                     <TableCell>{mobils.audio_jack}</TableCell>
                     <TableCell>{mobils.max_penumpang}</TableCell>
-                    <TableCell>Rp. <strong className="text-teal-500">{currencyFormat(Number(mobils.tarif))}</strong></TableCell>
+                    <TableCell>Rp. <strong className="text-teal-500">{(Number(mobils.tarif)).toLocaleString()}</strong></TableCell>
                     <TableCell>
                       <Badge color={mobils.status_booking === "Sudah Dibooking" ? "success" : "warning"}>{mobils.status_booking}</Badge>
                     </TableCell>

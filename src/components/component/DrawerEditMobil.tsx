@@ -29,11 +29,12 @@ export default function DrawerEditMobil({ mobils, userId }: any) {
   useEffect(() => {
     if (state?.message === "ok") {
       toast.success("Berhasil Mengubah Mobil!");
+      setIsOpen(false)
       router.refresh();
+      // supaya nilai state.message nya jadi tidak ok untuk mentrigger seIsOpen jadi nilai awal
+      state.message = "selesai"
     } else if (state?.error) {
       toast.error("Gagal Mengubah Mobil!");
-    } else if (state?.message === null) {
-      return;
     }
   }, [state?.message]);
 
@@ -241,7 +242,10 @@ export default function DrawerEditMobil({ mobils, userId }: any) {
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="status_booking" value="Status Booking" />
+                    <Label
+                      htmlFor="status_booking"
+                      value="Status Booking"
+                    />
                   </div>
                   <Select
                     id="status_booking"
@@ -250,38 +254,6 @@ export default function DrawerEditMobil({ mobils, userId }: any) {
                   >
                     <option>Belum Dibooking</option>
                     <option>Sudah Dibooking</option>
-                  </Select>
-                </div>
-                <div>
-                  <div className="mb-2 block">
-                    <Label
-                      htmlFor="status_pembayaran"
-                      value="Status Pembayaran"
-                    />
-                  </div>
-                  <Select
-                    id="status_pembayaran"
-                    name="status_pembayaran"
-                    defaultValue={mobils.status_pembayaran}
-                  >
-                    <option>Belum Dibayar</option>
-                    <option>Sudah Dibayar</option>
-                  </Select>
-                </div>
-                <div>
-                  <div className="mb-2 block">
-                    <Label
-                      htmlFor="status_penyewaan"
-                      value="Status Penyewaan"
-                    />
-                  </div>
-                  <Select
-                    id="status_penyewaan"
-                    name="status_penyewaan"
-                    defaultValue={mobils.status_penyewaan}
-                  >
-                    <option>Belum Dikembalikan</option>
-                    <option>Sudah Dikembalikan</option>
                   </Select>
                 </div>
               </div>

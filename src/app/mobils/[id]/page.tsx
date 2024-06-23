@@ -19,6 +19,7 @@ import { getOneMobil } from "@/lib/getData";
 import Image from "next/image";
 import FormBooking from "@/components/component/FormBooking";
 import { auth } from "../../../../auth";
+import { redirect } from "next/navigation";
 
 const customTheme: CustomFlowbiteTheme = {
   card: {
@@ -56,6 +57,8 @@ export default async function Mobil(mobilId: any) {
 
   const mobilOne = await getOneMobil(id);
   const user = await auth()
+
+  if(!user) return redirect('/signin')
 
   return (
     <>

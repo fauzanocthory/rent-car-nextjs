@@ -18,6 +18,7 @@ import { useFormState } from "react-dom";
 import toast from "react-hot-toast";
 import { HiCalendar } from "react-icons/hi";
 import { FaCar, FaRegEdit } from "react-icons/fa";
+import { ButtonPending } from "./ButtonPending";
 
 export function UsersUpdateDrawer(user: any) {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,12 +33,11 @@ export function UsersUpdateDrawer(user: any) {
       toast.success("Berhasil Mengubah User!");
       setIsOpen(false)
       router.refresh();
+      // supaya nilai state.message nya jadi tidak ok untuk mentrigger seIsOpen jadi nilai awal
+      state.message = "selesai"
     } else if (state?.error) {
       toast.error("Gagal Mengubah User!");
-    } else if (state?.message === null) {
-      return;
     }
-    console.log(state)
   }, [state?.message]);
 
   return (
@@ -58,10 +58,6 @@ export function UsersUpdateDrawer(user: any) {
               defaultValue={user.id}
             />
             <div className="mb-6 mt-3">
-{/*                 
-                <TextInput name="imageAwal" defaultValue={user.image} />
-                <TextInput name="simAwal" defaultValue={user.sim} />
-                <TextInput name="stnkAwal" defaultValue={user.stnk} /> */}
               <Label htmlFor="name" className="mb-2 block">
                 Nama
               </Label>
@@ -141,11 +137,11 @@ export function UsersUpdateDrawer(user: any) {
               <Avatar alt="" img={user.stnk} rounded size="lg" stacked />
               <Avatar alt="" img={user.sim} rounded size="lg" stacked />
             </Avatar.Group>
-            <Button className="w-full" type="submit">
-              <HiCalendar className="mr-2" />
-              Update User
-            </Button>
-            {/* <ButtonPending titlePending="Mengubah User..." title="Edit User" warnaButton="success"/> */}
+            <ButtonPending
+                titlePending="Mengubah..."
+                title="Update User"
+                warnaButton="success"
+              />
           </form>
         </Drawer.Items>
       </Drawer>

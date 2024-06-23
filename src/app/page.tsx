@@ -1,10 +1,11 @@
-import { CarCardComponent } from "@/components/component/CarCardHomepage";
+import { CarCardHomepage } from "@/components/component/CarCardHomepage";
 import { CarouselComponent } from "@/components/component/Carousel";
 import { OurCustomerComponent } from "@/components/component/OurCutomer";
+import { getMobils } from "@/lib/getData";
 import { Button } from "flowbite-react";
-import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
+  const allMobils = await getMobils();
   return (
     <>
       <div className="">
@@ -17,10 +18,16 @@ export default function Home() {
             Mobil kami
           </h1>
           <Button className="ml-2">Lihat lebih banyak</Button>
-          <div className="flex flex-col gap-2 sm:flex-row justify-center">
-            {/* <CarCardComponent />
-            <CarCardComponent />
-            <CarCardComponent /> */}
+          <div className="flex flex-col gap-2 sm:flex-row justify-between m-2">
+            {allMobils.map((mobils) => {
+              return (
+                <>
+                  <div key={mobils.id}>
+                    <CarCardHomepage mobils={mobils} />
+                  </div>
+                </>
+              );
+            })}
           </div>
         </section>
 
@@ -29,8 +36,8 @@ export default function Home() {
             Pelanggan kami
           </h1>
           <div className="flex flex-col gap-2 sm:flex-row justify-center">
-            <OurCustomerComponent customerHeading="Terbaru"/>
-            <OurCustomerComponent customerHeading="Langganan"/>
+            <OurCustomerComponent customerHeading="Terbaru" />
+            <OurCustomerComponent customerHeading="Langganan" />
           </div>
         </section>
       </div>

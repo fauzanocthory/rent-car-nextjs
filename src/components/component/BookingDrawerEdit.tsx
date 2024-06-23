@@ -24,11 +24,14 @@ export default function BookingDrawerEdit({bookings}: any) {
   const handleClose = () => setIsOpen(false);
 
   const [state, formAction] = useFormState(editBooking, null)
+
   useEffect(() => {
     if (state?.message === "ok") {
-      setIsOpen(false);
       toast.success("Berhasil Mengupdate Booking!");
       router.refresh();
+      setIsOpen(false);
+      // supaya nilai state.message nya jadi tidak ok untuk mentrigger seIsOpen jadi nilai awal
+      state.message = "selesai"
     }
   }, [state?.message]);
 
@@ -47,6 +50,7 @@ export default function BookingDrawerEdit({bookings}: any) {
             <form action={formAction} className="flex flex-col gap-1">
               <div className="flex flex-col gap-1">
                 <div>
+                  <TextInput id="mobilId" name="mobilId" defaultValue={bookings.mobil.id} className="" />
                   <TextInput id="bookingId" name="bookingId" defaultValue={bookings.id} className="hidden" />
                   <div className="mb-2 block">
                     <Label htmlFor="status_pembayaran" value="Status Pembayaran" />

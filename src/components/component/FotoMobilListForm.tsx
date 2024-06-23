@@ -13,10 +13,9 @@ export default function FotoMobilListForm({ fotoMobil }: any) {
   useEffect(() => {
     if (state?.message === "ok") {
       toast.success("Berhasil Menghapus Mobil!");
+      router.refresh()
     } else if (state?.error) {
       toast.error("Gagal Menghapus Mobil!");
-    } else if (state?.message === null) {
-      return;
     }
   }, [state?.message]);
 

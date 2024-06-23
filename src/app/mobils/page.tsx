@@ -1,9 +1,12 @@
-import { CarCardComponent } from "@/components/component/CarCardHomepage";
+import { CarCardHomepage } from "@/components/component/CarCardHomepage";
 import { getMobils } from "@/lib/getData";
 import { Label, RangeSlider, TextInput } from "flowbite-react";
+import { auth } from "../../../auth";
 
 export default async function Mobils() {
   const mobils = await getMobils();
+  const user = await auth()
+
   return (
     <>
       <div className="p-4">
@@ -33,13 +36,13 @@ export default async function Mobils() {
             <RangeSlider id="lg-range" sizing="md" />
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-4 ">
+        <div className="grid grid-cols-1 gap-2 lg:grid-cols-4 ">
           {mobils &&
             mobils.map((mobil) => {
               return (
                 <>
                   <div key={mobil.id}>
-                    <CarCardComponent mobils={mobil} />
+                    <CarCardHomepage mobils={mobil} user={user} />
                   </div>
                 </>
               );
