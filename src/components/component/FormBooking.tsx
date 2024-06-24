@@ -4,9 +4,21 @@ import { Label, Datepicker, Select, Button, TextInput } from "flowbite-react";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { ButtonPending } from "./ButtonPending";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function FormBooking({mobilId, userId} :any) {
     const [state, formAction] = useFormState(postBooking, null)
+    const router = useRouter()
+
+    useEffect(() => {
+      if (state?.message === "ok") {
+        toast.success('Berhasil Booking Mobil!')
+        // router.push('/user')
+      } else if(state?.error) {
+        toast.error('Gagal Menambahkan Mobil!')
+      }
+    }, [state?.message]);
 
   return (
     <>

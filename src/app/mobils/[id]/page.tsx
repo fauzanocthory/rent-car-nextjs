@@ -73,10 +73,10 @@ export default async function Mobil(mobilId: any) {
                 >
                   <Image
                     src={foto_mobil.image || ""}
-                    width={500}
-                    height={500}
+                    width={5000}
+                    height={5000}
                     alt={foto_mobil.id}
-                    className="w-10 h-10"
+                    className="w-fit h-fit"
                   />
                 </div>
               );

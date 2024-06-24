@@ -6,8 +6,8 @@ import {
   TableCell,
   TableRow,
 } from "flowbite-react";
-import BayarDrawer from "./BayarDrawer";
 import BookingDrawerEdit from "./BookingDrawerEdit";
+import { BookingsDelete } from "./BookingsDelete";
 
 export default function AdminBookingComponent({bookings}: any) {
    return (
@@ -41,6 +41,7 @@ export default function AdminBookingComponent({bookings}: any) {
         </TableCell>
         <TableCell>
           <BookingDrawerEdit bookings={bookings} />
+          <BookingsDelete bookings={bookings} />
         </TableCell>
       </TableRow>
     </>

@@ -479,9 +479,8 @@ export const postBooking = async (prevState: unknown, formData: FormData) => {
   // kalkulasi lama hari dan muali sewa dalam milisecond
   const tglSelesaiSewaMilisecond = lamaHariMilisecond+tglSewaMilisecond
   
-  // ubah menjadi datestring agar fapat dibaca manusia 
+  // ubah menjadi datestring agar dapat dibaca manusia 
   // const tglSelesaiSewaDateString = new Date(tglSelesaiSewaMilisecond).toLocaleDateString()
-
 
   try {
     await prisma.booking.create({
@@ -489,7 +488,7 @@ export const postBooking = async (prevState: unknown, formData: FormData) => {
         mobilId: mobilId,
         userId: userId,
         tanggal_mulai_sewa: tglSewaMilisecond,
-        lama_hari: lamahariToNumber,
+        lama_hari: lamahariToNumber+1,
         tglSelesaiSewa: tglSelesaiSewaMilisecond,
       },
     });
@@ -596,4 +595,14 @@ export const editBooking = async (prevState: unknown, formData: FormData) => {
   } catch (error) {
     return { message: "failed to update data" };
   }
+};
+
+// DELETE BOOKING
+export const deleteBookings = async (bookingId: any) => {
+  const deleteBooking = await prisma.booking.delete({
+    where: {
+      id: bookingId,
+    }
+  });
+  return deleteBooking;
 };

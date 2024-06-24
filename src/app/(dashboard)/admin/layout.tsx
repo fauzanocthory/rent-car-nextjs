@@ -15,7 +15,7 @@ export default async function RootLayout({
   
   return (
     <>
-      <div className="flex gap-1 dark:bg-gray-500">
+      <div className="flex flex-col md:flex-row gap-1 dark:bg-gray-500">
         <Dashboard user={user} />
         {/* <BreadcrumbComponent/> */}
         <SessionProvider session={user}>{children}</SessionProvider>

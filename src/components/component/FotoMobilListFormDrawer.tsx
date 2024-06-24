@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import toast from "react-hot-toast";
 
-export default function FotoMobilListForm({ fotoMobil }: any) {
+export default function FotoMobilListFormDrawer({ fotoMobil }: any) {
   const router = useRouter();
   const [state, formAction] = useFormState(deletePhotoMobil, null);
 

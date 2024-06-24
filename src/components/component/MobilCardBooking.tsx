@@ -4,8 +4,11 @@ import { Card } from "flowbite-react";
 export function MobilCardComponent({sewa}: any) {
   return (
     <Card className="max-w-sm" imgSrc={sewa.mobil.fotoMobil[0].image} horizontal>
-      <h6 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+      <h5 className="font-bold tracking-tight text-gray-900 dark:text-white">
         {sewa.mobil.merk}
+      </h5>
+      <h6 className="font-bold tracking-tight text-gray-900 dark:text-white">
+        {sewa.mobil.type}
       </h6>
       <div className="text-sm">
       <p className="font-bold text-gray-700 dark:text-gray-400">

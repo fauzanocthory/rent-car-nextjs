@@ -3,7 +3,7 @@ import { auth } from "../../../../../auth";
 
 export default async function AdminSettings({user}: any) {
   return (
-    <form className="flex max-w-md flex-col gap-4 mt-4 ml-4">
+    <form className="flex max-w-md flex-col gap-4 mt-4 ml-4  max-h-screen">
         <h1 className="font-bold text-xl">Setting</h1>
       <div>
         <div className="mb-2 block">

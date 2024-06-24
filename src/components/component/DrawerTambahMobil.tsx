@@ -32,9 +32,6 @@ export default function DrawerTambahMobil({ user }: any) {
     } else if(state?.error) {
       toast.error('Gagal Menambahkan Mobil!')
     }
-    else if(state?.message === null) {
-      return
-    }
   }, [state?.message]);
 
   return (

@@ -112,7 +112,7 @@ model Booking {
   mobil   Mobil  @relation(fields: [mobilId], references: [id], onDelete: Cascade)
   userId  String @db.ObjectId
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tanggal_mulai_sewa Int
+  tanggal_mulai_sewa Float?
   lama_hari Int
   tglSelesaiSewa Int
   status_pembayaran String?     @default("Belum Dibayar")

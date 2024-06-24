@@ -1,6 +1,7 @@
-"use client"
-import { CustomFlowbiteTheme, Flowbite, Sidebar } from "flowbite-react";
+"use client";
+import { Button, CustomFlowbiteTheme, Flowbite, Sidebar } from "flowbite-react";
 import Link from "next/link";
+import { useState } from "react";
 import {
   AiFillSetting,
   AiFillDollarCircle,
@@ -8,22 +9,29 @@ import {
   AiFillCar,
 } from "react-icons/ai";
 import { MdCarRental } from "react-icons/md";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
-const customTheme: CustomFlowbiteTheme = {
-  sidebar: {
-    root: {
-      inner:
-        "h-full overflow-y-auto overflow-x-hidden rounded-none px-3 py-4 bg-gray-200 dark:bg-gray-800",
-    },
-  },
-};
+export function Dashboard({ user }: any) {
+  const [open, isOpen] = useState(false);
 
-export function Dashboard({user}: any) {
   return (
-    <Flowbite theme={{ theme: customTheme }}>
+    <>
+      <Button
+        onClick={() => {
+          isOpen(!open);
+        }}
+        title="Buka Sidebar"
+        color="gray"
+        className="font-bold text-center focus:text-black hover:text-black md:hidden"
+      ><span>Sidebar</span> {!open ? (<IoIosArrowDown size={20} />) : (<IoIosArrowUp size={20} />)}</Button>
+
       <Sidebar
         aria-label="Sidebar with multi-level dropdown example"
-        className="h-[900px] w-fit overflow-y-visible"
+        className={
+          !open
+            ? "hidden md:h-screen md:block"
+            : "h-fit w-screen text-center relative md:h-screen md:block"
+        }
       >
         <Sidebar.Items>
           <Sidebar.ItemGroup>
@@ -90,6 +98,6 @@ export function Dashboard({user}: any) {
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>
-    </Flowbite>
+    </>
   );
 }

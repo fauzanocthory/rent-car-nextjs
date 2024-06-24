@@ -18,7 +18,7 @@ export default async function RencanaBooking() {
   const bookings = await getBookingUser(user?.user.id);
   return (
     <>
-      <div className="flex flex-col overflow-x-scroll">
+      <div className="flex flex-col overflow-x-scroll max-h-screen">
         <h1 className="p-3 text-xl dark:text-white">
           Daftar Booking Saya, {user?.user.name} As User
         </h1>

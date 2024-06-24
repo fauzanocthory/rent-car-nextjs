@@ -19,7 +19,7 @@ export default async function ListUsers() {
 
   return (
     <>
-      <div className="flex flex-col overflow-x-scroll w-full">
+      <div className="flex flex-col overflow-x-scroll w-full  max-h-screen">
         <h1 className="p-3 text-xl dark:text-white">Daftar Users</h1>
         <div className="">
           <div className="flex flex-row justify-between gap-2 px-2 mb-2 max-sm:flex-col">

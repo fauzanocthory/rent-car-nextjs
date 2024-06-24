@@ -21,7 +21,7 @@ export default function MobilComponent({
 
   return (
     <>
-      <div className="flex flex-col overflow-x-hidden">
+      <div className="flex flex-col overflow-x-hidden max-h-screen">
         <h1 className="p-3 text-xl dark:text-white">
           Daftar Mobil Saya,{" "}
           {user.data?.user.name || user.user.name} As {user?.data?.user?.role || user.user.role}

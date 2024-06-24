@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { FaCar, FaRegEdit } from "react-icons/fa";
-import FotoMobilListForm from "./FotoMobilListForm";
+import FotoMobilListFormDrawer from "./FotoMobilListFormDrawer";
 import toast from "react-hot-toast";
 import { ButtonPending } from "./ButtonPending";
 import { useRouter } from "next/navigation";
@@ -54,7 +54,7 @@ export default function DrawerEditMobil({ mobils, userId }: any) {
             <div className="flex w-full overflow-x-scroll gap-2">
               {mobils.fotoMobil.map((fotoMobil: any) => {
                 return (
-                  <FotoMobilListForm key={fotoMobil.id} mobilId={fotoMobil.id} fotoMobil={fotoMobil.image} />
+                  <FotoMobilListFormDrawer key={fotoMobil.id} mobilId={fotoMobil.id} fotoMobil={fotoMobil.image} />
                 );
               })}
             </div>
