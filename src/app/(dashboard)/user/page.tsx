@@ -5,7 +5,7 @@ export default async function Page() {
   const user = await auth();
   return (
     <>
-      <MobilComponent user={user} />
+      {/* <MobilComponent user={user} /> */}
     </>
   );
 }

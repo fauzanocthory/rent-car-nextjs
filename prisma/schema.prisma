@@ -85,7 +85,7 @@ model Mobil {
   kecepatan_cc      String?
   jumlah_pintu      String?
   fotoMobil         FotoMobil[]
-  tarif             Int?
+  tarif             String?
   status_booking    String?     @default("Belum Bibooking")
   nomor_polisi      String?     @unique
   userId            String      @db.ObjectId

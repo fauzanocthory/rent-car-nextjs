@@ -21,8 +21,8 @@ export function Dashboard({ user }: any) {
           isOpen(!open);
         }}
         title="Buka Sidebar"
-        color="gray"
-        className="font-bold text-center focus:text-black hover:text-black md:hidden"
+        color="dark"
+        className="font-bold text-center focus:text-white hover:text-white md:hidden"
       ><span>Sidebar</span> {!open ? (<IoIosArrowDown size={20} />) : (<IoIosArrowUp size={20} />)}</Button>
 
       <Sidebar

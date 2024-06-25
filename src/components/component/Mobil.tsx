@@ -13,6 +13,7 @@ import {
 import DrawerEditMobil from "./DrawerEditMobil";
 import { DrawerDeleteMobil } from "./DrawerDeleteMobil";
 import DrawerTambahMobil from "./DrawerTambahMobil";
+import SearchInput from "./SearchInput";
 export default function MobilComponent({
   mobils,
   user
@@ -29,13 +30,14 @@ export default function MobilComponent({
 
         <div className="">
           <div className="flex flex-row justify-between gap-2 px-2 mb-2 max-sm:flex-col">
-            <TextInput
+            {/* <TextInput
               className="flex-grow"
               id="nama"
               type="nama"
               placeholder="Cari Berdasarkan Merk, Type, Warna, Nomor Polisi, Tarif, Persneling dll."
               required
-            />
+            /> */}
+            <SearchInput placeholders="Search Mobil..." />
             <DrawerTambahMobil user={user} />
           </div>
         </div>

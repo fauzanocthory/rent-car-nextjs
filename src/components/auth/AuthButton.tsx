@@ -22,6 +22,7 @@ export function AuthButton({provider}: any) {
 export function AuthButtonSignOut() {
   return (
     <form
+    
       action={async () => {
         "use server";
         await signOut();

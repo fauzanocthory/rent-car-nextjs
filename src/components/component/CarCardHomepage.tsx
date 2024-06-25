@@ -13,7 +13,7 @@ export function CarCardHomepage({ mobils, user }: any) {
     >
       <div>
         <dd className="font-medium text-gray-400">{mobils?.merk}</dd>
-        <dd className="font-medium text-gray-900">{mobils?.type}</dd>
+        <dd className="font-medium text-gray-400">{mobils?.type}</dd>
       </div>
 
       <div className="flex items-center justify-between">

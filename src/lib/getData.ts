@@ -24,8 +24,31 @@ export const getimageFromDb = async (id: string) => {
 
 // USER SERVER ACTION
 // FETCH USER
-export const getUsers = async () => {
-  const users = await prisma.user.findMany();
+export const getUsers = async (query: string) => {
+  const users = await prisma.user.findMany({
+    where: {
+      OR: [
+        {
+          email: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          nomorHandphone: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      ],
+    },
+  });
   return users;
 };
 
@@ -176,8 +199,52 @@ export const deleteUser = async (id: any) => {
 
 // MOBIL SERVER ACTION
 // FETCH MOBIL
-export const getMobils = async () => {
+export const getMobils = async (query: string, tarifLte: string, tarifGte: string) => {
   const mobils = await prisma.mobil.findMany({
+    where: {
+      OR: [
+        {
+          merk: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          type: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          warna: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          persneling: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          bahan_bakar: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          status_booking: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      ],
+      tarif: {
+        lte: tarifLte || "500000",
+        gte: tarifGte || "100000",
+      }
+    },
     include: {
       fotoMobil: true,
     },
@@ -213,7 +280,7 @@ const tambahMobilSchema = z.object({
   air_conditioner: z.string().min(1),
   bluetooth: z.string().min(1),
   audio_jack: z.string().min(1),
-  tarif: z.number().min(1),
+  tarif:z.string(),
   nomor_polisi: z.string().min(1),
   foto_mobil: z
     .instanceof(File)
@@ -282,7 +349,6 @@ export const tambahMobil = async (prevState: unknown, formData: FormData) => {
         userId,
       },
     });
-    revalidatePath("/admin");
     return { message: "ok" };
   } catch (error) {
     return { message: "failed" };
@@ -337,6 +403,7 @@ export const updateMobil = async (prevState: unknown, formData: FormData) => {
     status_booking,
     foto_mobil,
     nomor_polisi,
+    tarif
   } = validateFields.data;
 
   const { url } = await put(foto_mobil.name, foto_mobil, {
@@ -361,6 +428,7 @@ export const updateMobil = async (prevState: unknown, formData: FormData) => {
             image: url,
           },
         },
+        tarif,
         nomor_polisi,
         userId,
       },
@@ -469,17 +537,17 @@ export const postBooking = async (prevState: unknown, formData: FormData) => {
 
   const { tanggal_sewa, lama_hari, mobilId, userId } = validatedFields.data;
   // concer string lama_hari jadi number
-  const lamahariToNumber = Number(lama_hari)-1
+  const lamahariToNumber = Number(lama_hari) - 1;
   // convert date jadi datestring dari tanggal_sewa
-  const tglSewaDateString = new Date(tanggal_sewa).toLocaleDateString()
+  const tglSewaDateString = new Date(tanggal_sewa).toLocaleDateString();
   // ubah date string jadi milisecond
   const tglSewaMilisecond = new Date(tglSewaDateString).getTime();
   // kalkulasi lama hari sewa dengan milisecond
-  const lamaHariMilisecond = lamahariToNumber*86400000 
+  const lamaHariMilisecond = lamahariToNumber * 86400000;
   // kalkulasi lama hari dan muali sewa dalam milisecond
-  const tglSelesaiSewaMilisecond = lamaHariMilisecond+tglSewaMilisecond
-  
-  // ubah menjadi datestring agar dapat dibaca manusia 
+  const tglSelesaiSewaMilisecond = lamaHariMilisecond + tglSewaMilisecond;
+
+  // ubah menjadi datestring agar dapat dibaca manusia
   // const tglSelesaiSewaDateString = new Date(tglSelesaiSewaMilisecond).toLocaleDateString()
 
   try {
@@ -488,7 +556,7 @@ export const postBooking = async (prevState: unknown, formData: FormData) => {
         mobilId: mobilId,
         userId: userId,
         tanggal_mulai_sewa: tglSewaMilisecond,
-        lama_hari: lamahariToNumber+1,
+        lama_hari: lamahariToNumber + 1,
         tglSelesaiSewa: tglSelesaiSewaMilisecond,
       },
     });
@@ -499,46 +567,146 @@ export const postBooking = async (prevState: unknown, formData: FormData) => {
 };
 
 // get data bookings utk admin
-export const getAllBooking = async () => {
+export const getBookingByMerk = async (query: string) => {
   const allBookings = await prisma.booking.findMany({
+    where: {
+      mobil: {
+        OR: [
+          {
+            merk: {
+              contains: query || "",
+              mode: "insensitive",
+            },
+          },
+          {
+            type: {
+              contains: query || "",
+              mode: "insensitive",
+            },
+          },
+          {
+            warna: {
+              contains: query || "",
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+    },
     include: {
       mobil: true,
-      user: true
-    }
+      user: true,
+    },
   });
   return allBookings;
 };
 
+// export const getBookingByKode = async (query: string) => {
+//   const allBookings = await prisma.booking.findMany({
+//     where: {
+//       id: query
+//     },
+//     include: {
+//       mobil: true,
+//       user: true,
+//     },
+//   });
+//   return allBookings;
+// };
+
+
 // get data bookings utk user
-export const getBookingUser = async (userId:any) => {
+export const getBookingUser = async (userId: any, query: string) => {
   const allBookingsUser = await prisma.booking.findMany({
     where: {
       status_pengembalian: "Belum Dikembalikan",
-      userId: userId
+      userId: userId,
+      mobil: {
+        OR: [
+          {
+            merk: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            type: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            warna: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            nomor_polisi: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            status_booking: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            warna: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
     },
     include: {
       mobil: true,
-      user: true
-    }
+      user: true,
+    },
   });
   return allBookingsUser;
 };
 
 // get data bookings utk user
-export const getBookingSewa = async (userId:any) => {
+export const getBookingSewa = async (userId: any, query: string) => {
   const allBookingsSewa = await prisma.booking.findMany({
     where: {
       status_pengembalian: "Sudah Dikembalikan",
-      userId: userId
+      userId: userId,
+      mobil: {
+        OR: [
+          {
+            merk: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            type: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            warna: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
     },
     include: {
       mobil: {
         include: {
-          fotoMobil: true
-        }
+          fotoMobil: true,
+        },
       },
       user: true,
-    }
+    },
   });
   return allBookingsSewa;
 };
@@ -562,12 +730,8 @@ export const editBooking = async (prevState: unknown, formData: FormData) => {
     };
   }
 
-  const {
-    status_pembayaran,
-    status_pengembalian,
-    bookingId,
-    mobilId
-  } = validateFields.data;
+  const { status_pembayaran, status_pengembalian, bookingId, mobilId } =
+    validateFields.data;
   try {
     await prisma.booking.update({
       where: {
@@ -579,17 +743,17 @@ export const editBooking = async (prevState: unknown, formData: FormData) => {
       },
     });
 
-    // INI AKAN OTOMATIS MENGUPDATE FIELD STATUS_BOOKING 
+    // INI AKAN OTOMATIS MENGUPDATE FIELD STATUS_BOOKING
     // PADA TABLE MOBIL KETIKA ADMIN MENGUBAH STATUS_PENGEMBALIAN PADA TABLE BOOKING
-    if(status_pengembalian === "Sudah Dikembalikan"){
+    if (status_pengembalian === "Sudah Dikembalikan") {
       await prisma.mobil.update({
         where: {
-          id: mobilId
+          id: mobilId,
         },
         data: {
-          status_booking: 'Belum Dibooking'
-        }
-      })
+          status_booking: "Belum Dibooking",
+        },
+      });
     }
     return { message: "ok" };
   } catch (error) {
@@ -602,7 +766,7 @@ export const deleteBookings = async (bookingId: any) => {
   const deleteBooking = await prisma.booking.delete({
     where: {
       id: bookingId,
-    }
+    },
   });
   return deleteBooking;
 };

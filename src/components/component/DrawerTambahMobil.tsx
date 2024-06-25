@@ -12,13 +12,16 @@ import {
 import { tambahMobil } from "@/lib/getData";
 import { FaCar } from "react-icons/fa";
 import { useFormState } from "react-dom";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonPending } from "./ButtonPending";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
 
 export default function DrawerTambahMobil({ user }: any) {
   const ref = React.useRef<HTMLFormElement>(null);
   const [state, formAction] = useFormState(tambahMobil, null);
+  const router = useRouter()
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,12 +30,12 @@ export default function DrawerTambahMobil({ user }: any) {
   useEffect(() => {
     if (state?.message === "ok") {
       toast.success('Berhasil Menambahkan Mobil!')
-      ref.current?.reset()
+      router.refresh()
       setIsOpen(false);
     } else if(state?.error) {
       toast.error('Gagal Menambahkan Mobil!')
     }
-  }, [state?.message]);
+  }, [state?.message, state?.error]);
 
   return (
     <>
@@ -219,6 +222,7 @@ export default function DrawerTambahMobil({ user }: any) {
                   className="w-full"
                   color={state?.error?.tarif ? "failure" : ""}
                 />
+                {state?.error?.tarif}
               </div>
               <div>
                 <div className="mb-2 block">

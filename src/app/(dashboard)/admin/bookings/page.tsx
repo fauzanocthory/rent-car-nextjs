@@ -9,13 +9,23 @@ import {
 } from "flowbite-react";
 import Link from "next/link";
 
-import { getAllBooking } from "@/lib/getData";
+import { getBookingByMerk } from "@/lib/getData";
 import { auth } from "../../../../../auth";
 import AdminBookingComponent from "@/components/component/AdminBookingsComponents";
+import SearchInput from "@/components/component/SearchInput";
+import { Suspense } from "react";
 
-export default async function RencanaBooking() {
-  const bookings = await getAllBooking();
-  const user = await auth()
+export default async function RencanaBooking({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+  };
+}) {
+  const query = searchParams?.query || "";
+  const bookings = await getBookingByMerk(query);
+  const user = await auth();
+
   return (
     <>
       <div className="flex flex-col overflow-x-scroll  max-h-screen">
@@ -24,13 +34,15 @@ export default async function RencanaBooking() {
         </h1>
         <div className="">
           <div className="flex flex-row justify-between gap-2 px-2 mb-2 max-sm:flex-col">
-            <TextInput
+            {/* <TextInput
               className="flex-grow"
               id="nama"
               type="nama"
               placeholder="Cari Berdasarkan Merk, Type, Warna, Nomor Polisi, Tarif, Persneling dll."
               required
-            />
+            /> */}
+            <SearchInput placeholders="Search Booking Berdasarkan Merk, Type, Warna, atau Kode Booking..." />
+
             <Button as={Link} href="/mobils">
               Tambah Booking
             </Button>
@@ -63,7 +75,7 @@ export default async function RencanaBooking() {
                 bookings.map((booking: any) => {
                   return (
                     <>
-                      <AdminBookingComponent user={user} bookings={booking} />
+                        <AdminBookingComponent user={user} bookings={booking} />
                     </>
                   );
                 })}

@@ -50,7 +50,7 @@ export default function BookingDrawerEdit({bookings}: any) {
             <form action={formAction} className="flex flex-col gap-1">
               <div className="flex flex-col gap-1">
                 <div>
-                  <TextInput id="mobilId" name="mobilId" defaultValue={bookings.mobil.id} className="" />
+                  <TextInput id="mobilId" name="mobilId" defaultValue={bookings.mobil.id} className="hidden" />
                   <TextInput id="bookingId" name="bookingId" defaultValue={bookings.id} className="hidden" />
                   <div className="mb-2 block">
                     <Label htmlFor="status_pembayaran" value="Status Pembayaran" />

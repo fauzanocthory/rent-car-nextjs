@@ -12,10 +12,21 @@ import Link from "next/link";
 import { getBookingUser } from "@/lib/getData";
 import RencanaBookingComponent from "@/components/component/RencanaBooking";
 import { auth } from "../../../../../auth";
+import SearchInput from "@/components/component/SearchInput";
 
-export default async function RencanaBooking() {
+export default async function RencanaBooking({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+  };
+}) {
+
+  const query = searchParams?.query || "";
   const user = await auth()
-  const bookings = await getBookingUser(user?.user.id);
+  const id = user?.user.id
+  const bookings = await getBookingUser(id, query);
+
   return (
     <>
       <div className="flex flex-col overflow-x-scroll max-h-screen">
@@ -24,13 +35,15 @@ export default async function RencanaBooking() {
         </h1>
         <div className="">
           <div className="flex flex-row justify-between gap-2 px-2 mb-2 max-sm:flex-col">
-            <TextInput
+            {/* <TextInput
               className="flex-grow"
               id="nama"
               type="nama"
               placeholder="Cari Berdasarkan Merk, Type, Warna, Nomor Polisi, Tarif, Persneling dll."
               required
-            />
+            /> */}
+            <SearchInput placeholders="Search Booking Berdasarkan Merk, Type, Warna, Nomor Polisi, Lama Sewa atau Status..." />
+            
             <Button as={Link} href="/mobils">
               Tambah Booking
             </Button>
@@ -59,7 +72,7 @@ export default async function RencanaBooking() {
               <TableHeadCell>Action</TableHeadCell>
             </TableHead>
             <TableBody className="divide-y">
-              {bookings &&
+              {
                 bookings.map((booking: any) => {
                   return (
                     <>

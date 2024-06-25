@@ -35,7 +35,7 @@ export default async function NavbarComponents() {
       <div className="flex gap-4 md:order-2">
         {user && user ? (
           <>
-            <div className="hidden md:flex md:justify-center">
+            <div className="md:flex md:justify-center">
               <Dropdown
                 arrowIcon={true}
                 inline
@@ -59,7 +59,7 @@ export default async function NavbarComponents() {
                 <DropdownItem
                   as={Link}
                   href={
-                    user && user?.user?.role === "admin" ? "/admin" : "/user"
+                    user && user?.user?.role === "admin" ? "/admin" : "/user/rencana-booking"
                   }
                 >
                   Dashboard
@@ -81,7 +81,9 @@ export default async function NavbarComponents() {
             <NavbarToggle />
 
             {/* TOMBOL SIGN OUT */}
-            <AuthButtonSignOut />
+            <div className="hidden md:block">
+              <AuthButtonSignOut />
+            </div>
           </>
         ) : (
           <>
@@ -98,7 +100,7 @@ export default async function NavbarComponents() {
         )}
       </div>
 
-      <NavbarCollapse className="flex flex-col justify-center text-center">
+      <NavbarCollapse className="text-center">
         <NavbarLink as={Link} href="/">
           Home
         </NavbarLink>
@@ -107,57 +109,14 @@ export default async function NavbarComponents() {
         <NavbarLink as={Link} href="/mobils">
           List Mobil
         </NavbarLink>
-        <NavbarLink>
+        <NavbarLink href="#">
           <DarkThemeToggle className="py-0" />
         </NavbarLink>
         <NavbarLink>
-          {user && user ? (
-            <>
-              <div className="md:hidden">
-                <Dropdown
-                  arrowIcon={true}
-                  inline
-                  label={
-                    <Avatar
-                      alt="User settings"
-                      img={user?.user?.image || ""}
-                      rounded
-                      bordered
-                    />
-                  }
-                >
-                  <DropdownHeader>
-                    <span className="block text-sm font-bold">
-                      {user?.user?.name}
-                    </span>
-                    <span className="block truncate text-sm font-bold text-teal-600">
-                      {user?.user?.email}
-                    </span>
-                  </DropdownHeader>
-                  <DropdownItem
-                    as={Link}
-                    href={
-                      user && user?.user?.role === "admin" ? "/admin" : "/user"
-                    }
-                  >
-                    Dashboard
-                  </DropdownItem>
-                  <DropdownItem
-                    as={Link}
-                    href={
-                      user && user?.user?.role === "admin"
-                        ? "/admin/settings"
-                        : "/user/settings"
-                    }
-                  >
-                    Settings
-                  </DropdownItem>
-                </Dropdown>
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
+          {/* TOMBOL SIGN OUT */}
+          <div className="block md:hidden">
+            <AuthButtonSignOut />
+          </div>
         </NavbarLink>
       </NavbarCollapse>
     </Navbar>
