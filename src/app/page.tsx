@@ -5,7 +5,6 @@ import { getMobils } from "@/lib/getData";
 import { Button } from "flowbite-react";
 
 export default async function Home() {
-  const allMobils = await getMobils();
   return (
     <>
       <div className="">
@@ -19,7 +18,7 @@ export default async function Home() {
           </h1>
           <Button className="ml-2">Lihat lebih banyak</Button>
           <div className="flex flex-col gap-2 sm:flex-row justify-between m-2">
-            {allMobils.map((mobils) => {
+            {/* {allMobils.map((mobils) => {
               return (
                 <>
                   <div key={mobils.id}>
@@ -27,7 +26,7 @@ export default async function Home() {
                   </div>
                 </>
               );
-            })}
+            })} */}
           </div>
         </section>
 
