@@ -74,13 +74,13 @@ export default async function RencanaBooking({
               {bookings &&
                 bookings.map((booking: any, index) => {
                   return (
-                    <div key={index + 1}>
+                    <span key={index + 1}>
                       <RencanaBookingComponent
                         user={user}
                         bookings={booking}
                         index={index}
                       />
-                    </div>
+                    </span>
                   );
                 })}
             </TableBody>
