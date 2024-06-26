@@ -538,7 +538,7 @@ export const postBooking = async (prevState: unknown, formData: FormData) => {
 
   const { tanggal_sewa, lama_hari, mobilId, userId } = validatedFields.data;
   // concer string lama_hari jadi number
-  const lamahariToNumber = Number(lama_hari) - 1;
+  const lamahariToNumber = Number(lama_hari);
   // convert date jadi datestring dari tanggal_sewa
   const tglSewaDateString = new Date(tanggal_sewa).toLocaleDateString();
   // ubah date string jadi milisecond
