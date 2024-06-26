@@ -70,20 +70,18 @@ export default async function RencanaBooking({
               <TableHeadCell>Status Penyewaan</TableHeadCell>
               <TableHeadCell>Action</TableHeadCell>
             </TableHead>
-            <TableBody className="divide-y">
               {bookings &&
                 bookings.map((booking: any, index) => {
                   return (
-                    <span key={index + 1}>
+                    <TableBody key={index+1} className="divide-y">
                       <RencanaBookingComponent
                         user={user}
                         bookings={booking}
                         index={index}
-                      />
-                    </span>
+                        />
+                        </TableBody>
                   );
                 })}
-            </TableBody>
           </Table>
         </div>
       </div>
