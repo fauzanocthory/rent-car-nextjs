@@ -3,8 +3,10 @@ import { Badge, Button, Checkbox, TableCell, TableRow } from "flowbite-react";
 import BookingDrawerEdit from "./BookingDrawerEdit";
 import { BookingsDelete } from "./BookingsDelete";
 import { Suspense } from "react";
+import rupiahFormat from "@/lib/currencyRupiah";
+import dateToString from "@/lib/dateToString";
 
-export default function AdminBookingComponent({ bookings }: any) {
+export default function AdminBookingComponent({ bookings, index }: any) {
   return (
     <>
         <TableRow
@@ -12,7 +14,8 @@ export default function AdminBookingComponent({ bookings }: any) {
           className="bg-white dark:border-gray-700 dark:bg-gray-800"
         >
           <TableCell className="p-4">
-            <Checkbox />
+            {/* <Checkbox /> */}
+            {index +1}
           </TableCell>
           <TableCell className="font-medium text-gray-900 dark:text-white">
             {bookings.id}
@@ -26,12 +29,12 @@ export default function AdminBookingComponent({ bookings }: any) {
           <TableCell>{bookings.mobil.type}</TableCell>
           <TableCell>{bookings.mobil.warna}</TableCell>
           <TableCell>{bookings.mobil.nomor_polisi}</TableCell>
-          <TableCell>{bookings.tanggal_mulai_sewa}</TableCell>
-          <TableCell>{bookings.tglSelesaiSewa}</TableCell>
+          <TableCell>{dateToString(bookings.tanggal_mulai_sewa)}</TableCell>
+          <TableCell>{dateToString(bookings.tglSelesaiSewa)}</TableCell>
           <TableCell>{bookings.lama_hari} hari</TableCell>
-          <TableCell>Rp. {bookings.mobil.tarif}</TableCell>
+          <TableCell><strong className="text-teal-500">{rupiahFormat(bookings.mobil.tarif)}</strong></TableCell>
           <TableCell>
-            Rp. {(bookings.mobil.tarif * bookings.lama_hari).toLocaleString()}
+          <strong className="text-teal-500">{rupiahFormat(bookings.mobil.tarif * bookings.lama_hari)}</strong>
           </TableCell>
           <TableCell>
             <Badge

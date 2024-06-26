@@ -60,7 +60,7 @@ export default async function Users({
             </TableHead>
             <TableBody className="divide-y">
               {user &&
-                user.map((user: any) => {
+                user.map((user: any, index) => {
                   return (
                     <>
                       <TableRow
@@ -68,7 +68,8 @@ export default async function Users({
                         key={user.id}
                       >
                         <TableCell className="p-4">
-                          <Checkbox />
+                          {/* <Checkbox /> */}
+                          {index+1}
                         </TableCell>
                         <TableCell className="font-medium text-gray-900 dark:text-white">
                           <Avatar

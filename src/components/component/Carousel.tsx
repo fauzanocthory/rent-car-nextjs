@@ -32,13 +32,19 @@ export function CarouselComponent() {
             <span className="font-semibold text-gray-400 uppercase">
               Bekerja sama dengan
             </span>
-            <div className="flex flex-wrap justify-center items-center mt-8 text-gray-500 sm:justify-between font-bold">
-              <GiPoliceOfficerHead size={50} values="" />
-              <h1> POLICE DEPARTEMENT</h1>
-              <GiCapitol size={50} />
-              <h1>JASA RAHARJA</h1>
-              <FaPaypal size={50} />
-              <h1>PAYPAL</h1>
+            <div className="flex flex-col md:flex-row md:justify-between md:py-4 text-gray-500 font-bold">
+              <div className="flex flex-wrap text-center justify-center items-center py-4">
+                <GiPoliceOfficerHead size={50} />
+                <h1> POLICE DEPARTEMENT</h1>
+              </div>
+              <div className="flex flex-wrap text-center justify-center items-center py-4">
+                <GiCapitol size={50} />
+                <h1>JASA RAHARJA</h1>
+              </div>
+              <div className="flex flex-wrap text-center justify-center items-center py-4">
+                <FaPaypal size={50} />
+                <h1>PAYPAL</h1>
+              </div>
             </div>
           </div>
         </div>

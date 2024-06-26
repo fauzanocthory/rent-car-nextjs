@@ -21,10 +21,9 @@ export default async function RencanaBooking({
     query?: string;
   };
 }) {
-
   const query = searchParams?.query || "";
-  const user = await auth()
-  const id = user?.user.id
+  const user = await auth();
+  const id = user?.user.id;
   const bookings = await getBookingUser(id, query);
 
   return (
@@ -43,7 +42,7 @@ export default async function RencanaBooking({
               required
             /> */}
             <SearchInput placeholders="Search Booking Berdasarkan Merk, Type, Warna, Nomor Polisi, Lama Sewa atau Status..." />
-            
+
             <Button as={Link} href="/mobils">
               Tambah Booking
             </Button>
@@ -72,12 +71,10 @@ export default async function RencanaBooking({
               <TableHeadCell>Action</TableHeadCell>
             </TableHead>
             <TableBody className="divide-y">
-              {
-                bookings.map((booking: any) => {
+              {bookings &&
+                bookings.map((booking: any, index) => {
                   return (
-                    <>
-                      <RencanaBookingComponent user={user} bookings={booking} />
-                    </>
+                      <RencanaBookingComponent user={user} bookings={booking} index={index} />
                   );
                 })}
             </TableBody>

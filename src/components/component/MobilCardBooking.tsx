@@ -1,9 +1,11 @@
+import rupiahFormat from "@/lib/currencyRupiah";
+import dateToString from "@/lib/dateToString";
 import { Card } from "flowbite-react";
 
 export function MobilCardComponent({ sewa }: any) {
   return (
     <>
-      <div>
+      <div key={sewa.id}>
         <Card
           className="max-w-sm"
           imgSrc={sewa.mobil.fotoMobil[0].image}
@@ -21,21 +23,17 @@ export function MobilCardComponent({ sewa }: any) {
             </p>
             <p className="font-normal text-gray-700 dark:text-gray-400">
               <span className="font-bold">Tanggal Sewa :</span>{" "}
-              {new Date(sewa.tanggal_mulai_sewa).toLocaleDateString("id-ID", {
-                dateStyle: "full",
-              })}{" "}
+              {dateToString(sewa.tanggal_mulai_sewa)}{" "}
               s/d{" "}
-              {new Date(sewa.tglSelesaiSewa).toLocaleDateString("id-ID", {
-                dateStyle: "full",
-              })}
+              {dateToString(sewa.tglSelesaiSewa)}
             </p>
             <p className="font-normal text-gray-700 dark:text-gray-400">
               <span className="font-bold">Total Hari :</span> {sewa.lama_hari}{" "}
               Hari
             </p>
             <p className="font-normal text-gray-700 dark:text-gray-400">
-              <span className="font-bold">Total Biaya :</span> Rp.{" "}
-              {(sewa.mobil.tarif * sewa.lama_hari).toLocaleString()}
+              <span className="font-bold">Total Biaya :</span> {" "}
+              {rupiahFormat(sewa.mobil.tarif * sewa.lama_hari)}
             </p>
             <p className="font-normal text-gray-700 dark:text-gray-400">
               <span className="font-bold">Status Penyewaan :</span>{" "}

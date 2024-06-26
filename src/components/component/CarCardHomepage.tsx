@@ -3,6 +3,7 @@ import { IoPeople } from "react-icons/io5";
 import { GiGearStick } from "react-icons/gi";
 import { BiSolidGasPump } from "react-icons/bi";
 import Link from "next/link";
+import rupiahFormat from "@/lib/currencyRupiah";
 
 export function CarCardHomepage({ mobils, user }: any) {
   return (
@@ -17,8 +18,8 @@ export function CarCardHomepage({ mobils, user }: any) {
       </div>
 
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-900 dark:text-white">
-          Rp. {mobils?.tarif}/hari
+        <span className="text-sm text-teal-600 font-bold dark:text-white">
+          {rupiahFormat(mobils?.tarif)}/hari
         </span>
         {mobils?.status_booking === "Sudah Dibooking" ? (
           <>

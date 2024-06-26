@@ -37,7 +37,6 @@ export default function DrawerEditMobil({ mobils, userId }: any) {
       toast.error("Gagal Mengubah Mobil!");
     }
   }, [state?.message]);
-  console.log(state?.error)
 
   return (
     <>
@@ -236,6 +235,7 @@ export default function DrawerEditMobil({ mobils, userId }: any) {
                     id="tarif"
                     name="tarif"
                     placeholder="Rp. 100.000"
+                    type="text"
                     className="w-full"
                     defaultValue={mobils.tarif}
                     color={state?.error?.tarif ? "failure" : ""}

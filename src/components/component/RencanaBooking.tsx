@@ -1,8 +1,10 @@
 "use client";
 import { Badge, Button, Checkbox, TableCell, TableRow } from "flowbite-react";
 import BayarDrawer from "./BayarDrawer";
+import rupiahFormat from "@/lib/currencyRupiah";
+import dateToString from "@/lib/dateToString";
 
-export default function RencanaBookingComponent({ bookings }: any) {
+export default function RencanaBookingComponent({ bookings, index }: any) {
   return (
     <>
       <TableRow
@@ -10,7 +12,8 @@ export default function RencanaBookingComponent({ bookings }: any) {
         className="bg-white dark:border-gray-700 dark:bg-gray-800"
       >
         <TableCell className="p-4">
-          <Checkbox />
+          {/* <Checkbox /> */}
+          {index+1}
         </TableCell>
         <TableCell className="font-medium text-gray-900 dark:text-white">
           {bookings.id}
@@ -21,22 +24,24 @@ export default function RencanaBookingComponent({ bookings }: any) {
         <TableCell>{bookings.mobil.type}</TableCell>
         <TableCell>{bookings.mobil.warna}</TableCell>
         <TableCell>{bookings.mobil.nomor_polisi}</TableCell>
-        <TableCell>{bookings.tanggal_mulai_sewa}</TableCell>
-        <TableCell>{bookings.tglSelesaiSewa}</TableCell>
+        <TableCell>{dateToString(bookings.tanggal_mulai_sewa)}</TableCell>
+        <TableCell>{dateToString(bookings.tglSelesaiSewa)}</TableCell>
         <TableCell>{bookings.lama_hari} hari</TableCell>
-        <TableCell>Rp. {bookings.mobil.tarif}</TableCell>
+        <TableCell>{rupiahFormat(bookings.mobil.tarif)}</TableCell>
         <TableCell>
-          Rp. {(bookings.mobil.tarif * bookings.lama_hari).toLocaleString()}
+          {rupiahFormat(bookings.mobil.tarif * bookings.lama_hari)}
         </TableCell>
         <TableCell>
           <Badge
             color={
-              bookings.mobil.status_booking === "Sudah Dibooking"
+              bookings.status_pembayaran === "Sudah Dibayar"
                 ? "success"
                 : "warning"
             }
           >
-              {bookings.mobil.status_booking}
+            {bookings.status_pembayaran === "Sudah Dibayar"
+              ? "Sudah Dibooking"
+              : "Belum Dibooking"}
           </Badge>
         </TableCell>
         <TableCell>

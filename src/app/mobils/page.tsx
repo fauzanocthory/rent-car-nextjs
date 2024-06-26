@@ -1,9 +1,8 @@
 import { CarCardHomepage } from "@/components/component/CarCardHomepage";
 import { getMobils } from "@/lib/getData";
-import { Label, RangeSlider, Spinner, TextInput } from "flowbite-react";
+import { Label } from "flowbite-react";
 import { auth } from "../../../auth";
 import SearchInput from "@/components/component/SearchInput";
-import { Suspense } from "react";
 
 export default async function Mobils({
   searchParams,
@@ -15,8 +14,8 @@ export default async function Mobils({
   };
 }) {
   const query = searchParams?.query || "";
-  const tarifLte = searchParams?.tarifLte || (500000).toString();
-  const tarifGte = searchParams?.tarifGte || (100000).toString();
+  const tarifLte = searchParams?.tarifLte || "1000000";
+  const tarifGte = searchParams?.tarifGte || "0";
   const mobils = await getMobils(query, tarifLte, tarifGte);
   const user = await auth();
 

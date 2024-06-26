@@ -1,10 +1,16 @@
 import { CarCardHomepage } from "@/components/component/CarCardHomepage";
 import { CarouselComponent } from "@/components/component/Carousel";
 import { OurCustomerComponent } from "@/components/component/OurCutomer";
-import { getMobils } from "@/lib/getData";
+import { getMobils, getUsers } from "@/lib/getData";
 import { Button } from "flowbite-react";
 
 export default async function Home() {
+  const query = "";
+  const limit = 3;
+  const tarifLte = "500000" 
+  const tarifGte = "100000"
+  const allMobils = await getMobils(query, tarifLte, tarifGte, limit)
+  const allUsers = await getUsers(query)
   return (
     <>
       <div className="">
@@ -17,8 +23,8 @@ export default async function Home() {
             Mobil kami
           </h1>
           <Button className="ml-2">Lihat lebih banyak</Button>
-          <div className="flex flex-col gap-2 sm:flex-row justify-between m-2">
-            {/* {allMobils.map((mobils) => {
+          <div className="flex flex-col gap-2 sm:flex-row justify-between m-2 overflow-x-hidden">
+            {allMobils && allMobils.map((mobils) => {
               return (
                 <>
                   <div key={mobils.id}>
@@ -26,7 +32,7 @@ export default async function Home() {
                   </div>
                 </>
               );
-            })} */}
+            })}
           </div>
         </section>
 
@@ -35,8 +41,7 @@ export default async function Home() {
             Pelanggan kami
           </h1>
           <div className="flex flex-col gap-2 sm:flex-row justify-center">
-            <OurCustomerComponent customerHeading="Terbaru" />
-            <OurCustomerComponent customerHeading="Langganan" />
+            <OurCustomerComponent allUsers={allUsers} />
           </div>
         </section>
       </div>

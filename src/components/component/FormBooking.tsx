@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { postBooking } from "@/lib/getData";
 import { Label, Datepicker, Select, Button, TextInput } from "flowbite-react";
 import { useEffect } from "react";
@@ -7,25 +7,27 @@ import { ButtonPending } from "./ButtonPending";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-export default function FormBooking({mobilId, userId} :any) {
-    const [state, formAction] = useFormState(postBooking, null)
-    const router = useRouter()
+export default function FormBooking({ mobilId, userId }: any) {
+  const [state, formAction] = useFormState(postBooking, null);
+  const router = useRouter();
 
-    useEffect(() => {
-      if (state?.message === "ok") {
-        toast.success('Berhasil Booking Mobil!')
-        // router.push('/user')
-      } else if(state?.error) {
-        toast.error('Gagal Menambahkan Mobil!')
-      }
-    }, [state?.message]);
+  useEffect(() => {
+    if (state?.message === "ok") {
+      router.push("/user/rencana-booking");
+      toast.success("Berhasil Booking Mobil!");
+      // supaya nilai state.message nya jadi tidak ok untuk mentrigger seIsOpen jadi nilai awal
+      state.message = "selesai";
+    } else if (state?.error) {
+      toast.error("Gagal Menambahkan Mobil!");
+    }
+  }, [state?.message]);
 
   return (
     <>
       <form action={formAction}>
         <div>
-          <TextInput  name="mobilId" defaultValue={mobilId} className="hidden" />
-          <TextInput  name="userId" defaultValue={userId} className="hidden" />
+          <TextInput name="mobilId" defaultValue={mobilId} className="hidden" />
+          <TextInput name="userId" defaultValue={userId} className="hidden" />
           <div className="mb-2 block">
             <Label htmlFor="tanggal" value="Tanggal Penyewaan" />
           </div>
@@ -46,12 +48,12 @@ export default function FormBooking({mobilId, userId} :any) {
             <option>7</option>
           </Select>
         </div>
-           {state?.error?.lama_hari}
-           <ButtonPending
-                titlePending="Memproses..."
-                title="Booking"
-                warnaButton="success"
-              />
+        {state?.error?.lama_hari}
+        <ButtonPending
+          titlePending="Memproses..."
+          title="Booking"
+          warnaButton="success"
+        />
       </form>
     </>
   );

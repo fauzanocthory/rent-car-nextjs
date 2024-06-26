@@ -68,7 +68,7 @@ export default async function Mobil(mobilId: any) {
             mobilOne?.fotoMobil.map((foto_mobil, index) => {
               return (
                 <div
-                  key={index + 1}
+                  key={mobilOne.id}
                   className="flex h-full items-center justify-center bg-white dark:bg-gray-700 dark:text-white"
                 >
                   <Image

@@ -199,8 +199,9 @@ export const deleteUser = async (id: any) => {
 
 // MOBIL SERVER ACTION
 // FETCH MOBIL
-export const getMobils = async (query: string, tarifLte: string, tarifGte: string) => {
+export const getMobils = async (query?: string, tarifLte?: string, tarifGte?: string, limit?: number | string) => {
   const mobils = await prisma.mobil.findMany({
+    take: Number(limit) || parseInt((await prisma.mobil.count()).toString()),
     where: {
       OR: [
         {
@@ -241,8 +242,8 @@ export const getMobils = async (query: string, tarifLte: string, tarifGte: strin
         },
       ],
       tarif: {
-        lte: tarifLte || "500000",
-        gte: tarifGte || "100000",
+        lte: Number(tarifLte) || 1000000,
+        gte: Number(tarifGte) || 0,
       }
     },
     include: {
@@ -344,7 +345,7 @@ export const tambahMobil = async (prevState: unknown, formData: FormData) => {
             image: url,
           },
         },
-        tarif,
+        tarif: Number(tarif),
         status_booking,
         userId,
       },
@@ -428,7 +429,7 @@ export const updateMobil = async (prevState: unknown, formData: FormData) => {
             image: url,
           },
         },
-        tarif,
+        tarif: Number(tarif),
         nomor_polisi,
         userId,
       },
@@ -547,17 +548,19 @@ export const postBooking = async (prevState: unknown, formData: FormData) => {
   // kalkulasi lama hari dan muali sewa dalam milisecond
   const tglSelesaiSewaMilisecond = lamaHariMilisecond + tglSewaMilisecond;
 
-  // ubah menjadi datestring agar dapat dibaca manusia
-  // const tglSelesaiSewaDateString = new Date(tglSelesaiSewaMilisecond).toLocaleDateString()
+  // ubah menjadi string agar dapat disimpan di mongo database karena menggunakan number tidak efisien
+  const tglSewaStringMilisecond = tglSewaMilisecond.toString()
 
+  const tglSelesaiSewaString = tglSelesaiSewaMilisecond.toString()
+  
   try {
     await prisma.booking.create({
       data: {
         mobilId: mobilId,
         userId: userId,
-        tanggal_mulai_sewa: tglSewaMilisecond,
+        tanggal_mulai_sewa: tglSewaStringMilisecond,
         lama_hari: lamahariToNumber + 1,
-        tglSelesaiSewa: tglSelesaiSewaMilisecond,
+        tglSelesaiSewa: tglSelesaiSewaString,
       },
     });
     return { message: "ok" };

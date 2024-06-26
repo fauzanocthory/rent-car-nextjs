@@ -14,6 +14,7 @@ import DrawerEditMobil from "./DrawerEditMobil";
 import { DrawerDeleteMobil } from "./DrawerDeleteMobil";
 import DrawerTambahMobil from "./DrawerTambahMobil";
 import SearchInput from "./SearchInput";
+import rupiahFormat from "@/lib/currencyRupiah";
 export default function MobilComponent({
   mobils,
   user
@@ -63,11 +64,12 @@ export default function MobilComponent({
               <TableHeadCell>Action</TableHeadCell>
             </TableHead>
             <TableBody className="divide-y">
-              {mobils && mobils.map((mobils: any) => {
+              {mobils && mobils.map((mobils: any, index: any) => {
                 return (
                     <TableRow key={mobils.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                     <TableCell className="p-4">
-                      <Checkbox />
+                      {/* <Checkbox /> */}
+                      {index+1}
                     </TableCell>
                     <TableCell className="font-medium text-gray-900 dark:text-white">
                       {mobils.merk}
@@ -81,7 +83,7 @@ export default function MobilComponent({
                     <TableCell>{mobils.bluetooth}</TableCell>
                     <TableCell>{mobils.audio_jack}</TableCell>
                     <TableCell>{mobils.max_penumpang}</TableCell>
-                    <TableCell>Rp. <strong className="text-teal-500">{(Number(mobils.tarif)).toLocaleString()}</strong></TableCell>
+                    <TableCell><strong className="text-teal-500">{rupiahFormat(mobils.tarif)}</strong></TableCell>
                     <TableCell>
                       <Badge color={mobils.status_booking === "Sudah Dibooking" ? "success" : "warning"}>{mobils.status_booking}</Badge>
                     </TableCell>
