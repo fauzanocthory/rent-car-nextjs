@@ -18,38 +18,44 @@ export const getimageFromDb = async (id: string) => {
     });
     return result;
   } catch (error) {
-    throw new Error("Failed to fetch data");
+    console.log(error)
+    return [{message: "something went wrong with database"}]
   }
 };
 
 // USER SERVER ACTION
 // FETCH USER
 export const getUsers = async (query: string) => {
-  const users = await prisma.user.findMany({
-    where: {
-      OR: [
-        {
-          email: {
-            contains: query,
-            mode: "insensitive",
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        OR: [
+          {
+            email: {
+              contains: query,
+              mode: "insensitive",
+            },
           },
-        },
-        {
-          name: {
-            contains: query,
-            mode: "insensitive",
+          {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            },
           },
-        },
-        {
-          nomorHandphone: {
-            contains: query,
-            mode: "insensitive",
+          {
+            nomorHandphone: {
+              contains: query,
+              mode: "insensitive",
+            },
           },
-        },
-      ],
-    },
-  });
-  return users;
+        ],
+      },
+    });
+    return users;
+  } catch (error) {
+    console.log(error)
+    return [{message: "something went wrong with database."}]
+  }
 };
 
 // UPDATE USER
@@ -199,71 +205,86 @@ export const deleteUser = async (id: any) => {
 
 // MOBIL SERVER ACTION
 // FETCH MOBIL
-export const getMobils = async (query?: string, tarifLte?: string, tarifGte?: string, limit?: number | string) => {
-  const mobils = await prisma.mobil.findMany({
-    take: Number(limit) || parseInt((await prisma.mobil.count()).toString()),
-    where: {
-      OR: [
-        {
-          merk: {
-            contains: query,
-            mode: "insensitive",
+export const getMobils = async (
+  query?: string,
+  tarifLte?: string,
+  tarifGte?: string,
+  limit?: number | string
+) => {
+  try {
+    const mobils = await prisma.mobil.findMany({
+      take: Number(limit) || parseInt((await prisma.mobil.count()).toString()),
+      where: {
+        OR: [
+          {
+            merk: {
+              contains: query,
+              mode: "insensitive",
+            },
           },
-        },
-        {
-          type: {
-            contains: query,
-            mode: "insensitive",
+          {
+            type: {
+              contains: query,
+              mode: "insensitive",
+            },
           },
-        },
-        {
-          warna: {
-            contains: query,
-            mode: "insensitive",
+          {
+            warna: {
+              contains: query,
+              mode: "insensitive",
+            },
           },
-        },
-        {
-          persneling: {
-            contains: query,
-            mode: "insensitive",
+          {
+            persneling: {
+              contains: query,
+              mode: "insensitive",
+            },
           },
-        },
-        {
-          bahan_bakar: {
-            contains: query,
-            mode: "insensitive",
+          {
+            bahan_bakar: {
+              contains: query,
+              mode: "insensitive",
+            },
           },
-        },
-        {
-          status_booking: {
-            contains: query,
-            mode: "insensitive",
+          {
+            status_booking: {
+              contains: query,
+              mode: "insensitive",
+            },
           },
+        ],
+        tarif: {
+          lte: Number(tarifLte) || 1000000,
+          gte: Number(tarifGte) || 0,
         },
-      ],
-      tarif: {
-        lte: Number(tarifLte) || 1000000,
-        gte: Number(tarifGte) || 0,
-      }
-    },
-    include: {
-      fotoMobil: true,
-    },
-  });
-  return mobils;
+      },
+      include: {
+        fotoMobil: true,
+      },
+    });
+    return mobils;
+  } catch (error) {
+    console.log(error)
+    return [{message: "something went wrong with database."}]
+  }
 };
 
 // SINGLE MOBIL
 export const getOneMobil = async (mobilId: any) => {
-  const mobils = await prisma.mobil.findUnique({
-    where: {
-      id: mobilId,
-    },
-    include: {
-      fotoMobil: true,
-    },
-  });
-  return mobils;
+  try {
+    const mobils = await prisma.mobil.findUnique({
+      where: {
+        id: mobilId,
+      },
+      include: {
+        fotoMobil: true,
+      },
+    });
+    return mobils;
+  } catch (error) {
+    console.log(error)
+    return [{message: "something went wrong with database."}]
+  }
 };
 
 // TAMBAH MOBIL
@@ -281,7 +302,7 @@ const tambahMobilSchema = z.object({
   air_conditioner: z.string().min(1),
   bluetooth: z.string().min(1),
   audio_jack: z.string().min(1),
-  tarif:z.string(),
+  tarif: z.string(),
   nomor_polisi: z.string().min(1),
   foto_mobil: z
     .instanceof(File)
@@ -404,7 +425,7 @@ export const updateMobil = async (prevState: unknown, formData: FormData) => {
     status_booking,
     foto_mobil,
     nomor_polisi,
-    tarif
+    tarif,
   } = validateFields.data;
 
   const { url } = await put(foto_mobil.name, foto_mobil, {
@@ -538,7 +559,7 @@ export const postBooking = async (prevState: unknown, formData: FormData) => {
 
   const { tanggal_sewa, lama_hari, mobilId, userId } = validatedFields.data;
   // concer string lama_hari jadi number
-  const lamahariToNumber = Number(lama_hari) - 1;
+  const lamahariToNumber = Number(lama_hari);
   // convert date jadi datestring dari tanggal_sewa
   const tglSewaDateString = new Date(tanggal_sewa).toLocaleDateString();
   // ubah date string jadi milisecond
@@ -549,10 +570,10 @@ export const postBooking = async (prevState: unknown, formData: FormData) => {
   const tglSelesaiSewaMilisecond = lamaHariMilisecond + tglSewaMilisecond;
 
   // ubah menjadi string agar dapat disimpan di mongo database karena menggunakan number tidak efisien
-  const tglSewaStringMilisecond = tglSewaMilisecond.toString()
+  const tglSewaStringMilisecond = tglSewaMilisecond.toString();
 
-  const tglSelesaiSewaString = tglSelesaiSewaMilisecond.toString()
-  
+  const tglSelesaiSewaString = tglSelesaiSewaMilisecond.toString();
+
   try {
     await prisma.booking.create({
       data: {
@@ -616,7 +637,6 @@ export const getBookingByMerk = async (query: string) => {
 //   });
 //   return allBookings;
 // };
-
 
 // get data bookings utk user
 export const getBookingUser = async (userId: any, query: string) => {

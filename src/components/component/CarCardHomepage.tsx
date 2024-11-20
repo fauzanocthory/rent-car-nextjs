@@ -6,11 +6,12 @@ import Link from "next/link";
 import rupiahFormat from "@/lib/currencyRupiah";
 
 export function CarCardHomepage({ mobils, user }: any) {
+  console.log(mobils)
   return (
     <Card
       className="max-w-md"
-      imgAlt={mobils.fotoMobil[0].id}
-      imgSrc={mobils.fotoMobil[0].image}
+      imgAlt={mobils && mobils?.fotoMobil[0].id}
+      imgSrc={mobils && mobils?.fotoMobil[0].image}
     >
       <div>
         <dd className="font-medium text-gray-400">{mobils?.merk}</dd>
