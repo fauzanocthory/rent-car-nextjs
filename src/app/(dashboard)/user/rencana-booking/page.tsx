@@ -71,7 +71,7 @@ export default async function RencanaBooking({
               <TableHeadCell>Action</TableHeadCell>
             </TableHead>
               {bookings &&
-                bookings.map((booking: any, index) => {
+                bookings.map((booking: any, index: any) => {
                   return (
                     <TableBody key={index+1} className="divide-y">
                       <RencanaBookingComponent

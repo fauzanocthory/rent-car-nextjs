@@ -24,7 +24,7 @@ export default async function RiwayatBooking({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 grid-flow-row gap-4 p-1 h-screen my-2">
         {sewas &&
-          sewas.map((sewa) => {
+          sewas.map((sewa: any) => {
             return (
               <>
                 <div key={sewa.id}>

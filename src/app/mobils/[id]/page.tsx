@@ -29,33 +29,33 @@ const customTheme: CustomFlowbiteTheme = {
   },
 };
 
-interface Mobil {
+type Mobil = {
   id: string;
-  merk: string | null;
-  type: string | null;
-  warna: string | null;
-  bahan_bakar: string | null;
-  persneling: string | null;
-  max_penumpang: string | null;
-  air_conditioner: string | null;
-  bluetooth: string | null;
-  audio_jack: string | null;
-  tarif: string | null;
-  status_booking: string | null;
-  status_pembayaran: string | null;
-  status_penyewaan: string | null;
-  nomor_polisi: string | null;
-  tenaga_kuda: string | null;
-  kecepatan_cc: string | null;
-  kapasitas_tangki: string | null;
-  fotoMobil: { id: string; image: string | null; mobilId: string }[];
+  merk: string ;
+  type: string ;
+  warna: string ;
+  bahan_bakar: string ;
+  persneling: string ;
+  max_penumpang: string ;
+  air_conditioner: string ;
+  bluetooth: string ;
+  audio_jack: string ;
+  tarif: number ;
+  status_booking: string ;
+  status_pembayaran: string ;
+  status_penyewaan: string ;
+  nomor_polisi: string ;
+  tenaga_kuda: string ;
+  kecepatan_cc: string ;
+  kapasitas_tangki: string ;
+  fotoMobil: { id: string; image: string; mobilId: string }[];
   updatedAt: Date;
 }
 
-export default async function Mobil(mobilId: any) {
+export default async function Mobil(mobilId: { params: { id: string; }; }) {
   const { id } = mobilId.params;
 
-  const mobilOne = await getOneMobil(id);
+  const mobilOne = await getOneMobil(id) as Mobil | null;
   const user = await auth()
 
   if(!user) return redirect('/signin')
@@ -64,15 +64,14 @@ export default async function Mobil(mobilId: any) {
     <>
       <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
         <Carousel>
-          {mobilOne &&
-            mobilOne?.fotoMobil.map((foto_mobil, index) => {
+          {mobilOne?.fotoMobil.map((foto_mobil, index: number) => {
               return (
                 <div
-                  key={mobilOne.id}
+                  key={index}
                   className="flex h-full items-center justify-center bg-white dark:bg-gray-700 dark:text-white"
                 >
                   <Image
-                    src={foto_mobil.image || ""}
+                    src={foto_mobil.image || ''}
                     width={5000}
                     height={5000}
                     alt={foto_mobil.id}

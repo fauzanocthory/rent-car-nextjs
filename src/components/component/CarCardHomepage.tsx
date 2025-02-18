@@ -6,7 +6,6 @@ import Link from "next/link";
 import rupiahFormat from "@/lib/currencyRupiah";
 
 export function CarCardHomepage({ mobils, user }: any) {
-  console.log(mobils)
   return (
     <Card
       className="max-w-md"

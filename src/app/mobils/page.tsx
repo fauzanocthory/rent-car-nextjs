@@ -42,11 +42,10 @@ export default async function Mobils({
         </div>
         <div className="grid grid-cols-1 gap-2 lg:grid-cols-4 ">
           {
-            mobils.map((mobil) => {
+            mobils.map((mobil: any, index: any) => {
               return (
                 <>
-                  <div key={mobil.id} className="dark:text-white">
-          
+                  <div key={index} className="dark:text-white">
                       <CarCardHomepage mobils={mobil} user={user} />
                   </div>
                 </>

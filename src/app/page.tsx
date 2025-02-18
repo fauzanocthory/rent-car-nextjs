@@ -24,10 +24,10 @@ export default async function Home() {
           </h1>
           <Button className="ml-2">Lihat lebih banyak</Button>
           <div className="flex flex-col gap-2 sm:flex-row justify-between m-2 overflow-x-hidden">
-            {allMobils && allMobils.map((mobils) => {
+            {allMobils && allMobils.map((mobils: any, index: any) => {
               return (
                 <>
-                  <div key={mobils.id}>
+                  <div key={index}>
                     <CarCardHomepage mobils={mobils} />
                   </div>
                 </>

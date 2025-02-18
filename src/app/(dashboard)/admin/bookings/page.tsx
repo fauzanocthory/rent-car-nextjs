@@ -72,7 +72,7 @@ export default async function RencanaBooking({
             </TableHead>
             <TableBody className="divide-y">
               {bookings &&
-                bookings.map((booking: any, index) => {
+                bookings.map((booking: any, index: number) => {
                   return (
                     <>
                         <AdminBookingComponent user={user} bookings={booking} index={index} />

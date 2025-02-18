@@ -60,7 +60,7 @@ export default async function Users({
             </TableHead>
             <TableBody className="divide-y">
               {user &&
-                user.map((user: any, index) => {
+                user.map((user: any, index: any) => {
                   return (
                     <>
                       <TableRow

@@ -3,8 +3,6 @@
 import prisma from "./db";
 import { z } from "zod";
 import { del, put } from "@vercel/blob";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export const getimageFromDb = async (id: string) => {
   try {
@@ -107,7 +105,7 @@ export const updateUser = async (prevState: unknown, formData: FormData) => {
   // GET GAMBAR SIM, STNK, PROFIL DARI DATABASE
   const imageFromDb = await getimageFromDb(userId);
 
-  if (!imageFromDb) {
+  if (!imageFromDb || Array.isArray(imageFromDb)) {
     return { message: "no data found" };
   }
 
@@ -270,7 +268,7 @@ export const getMobils = async (
 };
 
 // SINGLE MOBIL
-export const getOneMobil = async (mobilId: any) => {
+export const getOneMobil = async (mobilId: string) => {
   try {
     const mobils = await prisma.mobil.findUnique({
       where: {
